@@ -1,0 +1,28 @@
+package cool.yzt.cap.constant;
+
+public interface MessageConstant {
+    int ACTIVATION_SUCCESS = 0;
+    int ACTIVATION_REPEAT = 1;
+    int ACTIVATION_FAILED = 2;
+
+
+    int REGISTER_SUCCESS = 0;
+    int REGISTER_USERNAME_IS_BLANK = 1;
+    int REGISTER_USERNAME_IS_EXIST = 2;
+    int REGISTER_PASSWORD_IS_BLANK = 3;
+    int REGISTER_EMAIL_IS_BLANK = 4;
+    int REGISTER_EMAIL_IS_EXIST = 5;
+
+
+    int LOGIN_SUCCESS = 0;
+    int LOGIN_FAILED_USERNAME = 1;
+    int LOGIN_FAILED_PASSWORD = 2;
+    int LOGIN_FAILED_STATUS = 3;
+
+    int CHANGE_PASSWORD_SUCCESS = 0;
+    int CHANGE_PASSWORD_FAILED_OLD_IS_WRONG = 1;
+
+    int COMMENT_ENTITY_TYPE_COMMENT = 1;
+    int COMMENT_ENTITY_TYPE_REPLY = 2;
+
+}

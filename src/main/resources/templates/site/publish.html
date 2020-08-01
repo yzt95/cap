@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>CodeAndPeace-发布新贴</title>
+
+    <link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}" />
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script th:src="@{/lib/editormd/editormd.min.js}"></script>
+
+
+
+</head>
+<body>
+
+<header class="bg-dark sticky-top" th:replace="index::header"></header>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起新问题</h2>
+            <hr>
+
+            <form th:action="@{/publish}" method="post">
+                <input type="hidden" name="id" value="">
+                <div class="form-group">
+                    <label for="title">问题标题</label>
+                    <input type="text" class="form-control" value="" id="title" name="title"
+                           placeholder="请输入标题"
+                           autocomplete="off">
+                </div>
+                <div class="form-group" id="question-editor">
+                    <label for="description">问题补充</label>
+                    <textarea name="content" id="description" style="display:none;"
+                              class="form-control"
+                              cols="30"
+                              rows="10"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var editor = editormd("question-editor", {
+                            width: "100%",
+                            height: 550,
+                            path   : "/lib/editormd/lib/",
+                            delay: 0,
+                            placeholder: "开始编辑...",
+                            emoji : true,
+                        });
+                    });
+                    onfullscreen=function full() {};
+                </script>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-publish ">
+                        发布
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+            <hr>
+            <h3>问题发起指南</h3>
+            • 问题标题: 请用精简的语言描述您发布的问题，不超过25字
+            <br>
+            • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观
+            <br>
+            • 墙裂推荐使用Markdown语法发布问题
+        </div>
+    </div>
+
+
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/global.js}"></script>
+</body>
+</html>
