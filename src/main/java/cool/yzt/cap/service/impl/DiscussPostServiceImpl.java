@@ -9,6 +9,7 @@ import cool.yzt.cap.mapper.DiscussPostMapper;
 import cool.yzt.cap.service.DiscussPostService;
 import cool.yzt.cap.service.LikeService;
 import cool.yzt.cap.service.UserService;
+import cool.yzt.cap.util.PageBeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,19 +51,7 @@ public class DiscussPostServiceImpl implements DiscussPostService {
                 contents.add(content);
             }
         }
-        PageBean pageBean = new PageBean();
-        pageBean.setContents(contents);
-
-        pageBean.setCurrent(pageInfo.getPageNum());
-        pageBean.setSize(pageInfo.getPageSize());
-        pageBean.setTotalContent(pageInfo.getTotal());
-        pageBean.setTotalPage(pageInfo.getPages());
-        pageBean.setPrePage(pageInfo.getPrePage());
-        pageBean.setNextPage(pageInfo.getNextPage());
-        pageBean.setFirst(pageInfo.isIsFirstPage());
-        pageBean.setLast(pageInfo.isIsLastPage());
-
-        return pageBean;
+        return PageBeanUtil.getPageBean(pageInfo,contents);
     }
 
     @Override
@@ -90,5 +79,26 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     @Override
     public int updateCommentCount(int postId, int commentCount) {
         return discussPostMapper.updateCommentCount(postId,commentCount);
+    }
+
+    @Override
+    public PageBean findByUserId(int userId, int start, int limit) {
+        PageHelper.startPage(start,limit);
+        List<DiscussPost> posts = discussPostMapper.selectAllByUserId(userId);
+        PageInfo<DiscussPost> pageInfo = new PageInfo<>(posts);
+        List<Map<String, Object>> contents = new ArrayList<>();
+        if(posts!=null) {
+            for (DiscussPost post : posts) {
+                Map<String, Object> content = new HashMap<>();
+                content.put("date",post.getCreateTime());
+                content.put("title",post.getTitle());
+                content.put("likeCount",likeService.findEntityLikeCount(1,post.getId()));
+                content.put("postId",post.getId());
+                content.put("isTop",post.getType()==1);
+                content.put("isGreat",post.getStatus()==1);
+                contents.add(content);
+            }
+        }
+        return PageBeanUtil.getPageBean(pageInfo,contents);
     }
 }

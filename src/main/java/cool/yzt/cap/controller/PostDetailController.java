@@ -51,7 +51,7 @@ public class PostDetailController {
             model.addAttribute("likeStatus",likeService.findEntityLikeStatus(currentUserId,1,post.getId()));
             model.addAttribute("pageBean",pageBean);
         } else {
-            return "index";
+            return "redirect:/index";
         }
         return "site/discuss-detail";
     }

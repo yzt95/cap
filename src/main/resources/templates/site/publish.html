@@ -32,14 +32,15 @@
                     <label for="title">问题标题</label>
                     <input type="text" class="form-control" value="" id="title" name="title"
                            placeholder="请输入标题"
-                           autocomplete="off">
+                           autocomplete="off"
+                           th:value="${code==null}?'':${title}">
                 </div>
                 <div class="form-group" id="question-editor">
                     <label for="description">问题补充</label>
                     <textarea name="content" id="description" style="display:none;"
                               class="form-control"
                               cols="30"
-                              rows="10"></textarea>
+                              rows="10" th:utext="${code==null}?'':${content}"></textarea>
                 </div>
                 <script type="text/javascript">
                     $(function () {
@@ -50,6 +51,7 @@
                             delay: 0,
                             placeholder: "开始编辑...",
                             emoji : true,
+                            tex : true,
                         });
                     });
                     onfullscreen=function full() {};
@@ -72,12 +74,15 @@
             • 墙裂推荐使用Markdown语法发布问题
         </div>
     </div>
-
+    <input type="hidden" id="msg" th:value="${code==null?'':msg}">
 
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 <script th:src="@{/js/global.js}"></script>
+<script th:if="${code!=null&&code==0}">
+    alert($("#msg").val());
+</script>
 </body>
 </html>

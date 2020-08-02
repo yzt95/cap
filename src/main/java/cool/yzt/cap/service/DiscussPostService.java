@@ -12,4 +12,5 @@ public interface DiscussPostService {
     DiscussPost findById(int id);
     int save(DiscussPost post);
     int updateCommentCount(int postId,int commentCount);
+    PageBean findByUserId(int userId,int start, int limit);
 }

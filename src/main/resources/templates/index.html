@@ -46,7 +46,7 @@
 									<img th:src="${loggedInUser.headerUrl}" class="rounded-circle" style="width:30px;"/>
 								</a>
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item text-center" th:href="@{|/user/profile/${loggedInUser.username}|}" style="color: black">个人主页</a>
+									<a class="dropdown-item text-center" th:href="@{|/user/${loggedInUser.username}/profile|}" style="color: black">个人主页</a>
 									<a class="dropdown-item text-center" th:href="@{/user/setting}" style="color: black">账号设置</a>
 									<a class="dropdown-item text-center" th:href="@{/logout}" style="color: black">退出登录</a>
 									<div class="dropdown-divider"></div>
@@ -64,6 +64,7 @@
 			</div>
 		</header>
 
+
 		<!-- 内容 -->
 		<div class="main bgimg">
 			<div class="container">
@@ -71,7 +72,7 @@
 					<!-- 筛选条件 -->
 					<ul class="nav nav-tabs mb-3">
 						<li class="nav-item">
-							<a class="nav-link active" href="#">最新</a>
+							<div class="nav-link active">最新</div>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#">最热</a>
@@ -83,10 +84,12 @@
 
 				</div>
 
+
+
 				<!-- 帖子列表 -->
 				<ul class="list-unstyled">
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${pageBean.contents}">
-						<a th:href="@{|/user/profile/${map.user.username}|}">
+						<a th:href="@{|/user/${map.user.username}/profile|}">
 							<img th:src="${map.user.headerUrl}" class="mr-4 rounded-circle" alt="用户头像" style="width:50px;height:50px;">
 						</a>
 						<div class="media-body">
@@ -140,7 +143,7 @@
 				<div class="row">
 					<!-- 二维码 -->
 					<div class="col-4 qrcode">
-						<img src="https://uploadfiles.nowcoder.com/app/app_download.png" class="img-thumbnail" style="width:136px;" />
+						<img th:src="@{/img/qrcode.png}" class="img-thumbnail" style="width:136px;" />
 					</div>
 					<!-- 公司信息 -->
 					<div class="col-8 detail-info">
@@ -148,25 +151,19 @@
 							<div class="col">
 								<ul class="nav">
 									<li class="nav-item">
-										<a class="nav-link text-light" href="#">关于我们</a>
+										<a class="nav-link text-light" target="_blank" href="https://yzt.cool/s/about">关于</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link text-light" href="#">加入我们</a>
+										<a class="nav-link text-light" target="_blank" href="https://github.com/yzt95/cap">源码地址</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link text-light" href="#">意见反馈</a>
+										<a class="nav-link text-light" target="_blank" href="https://github.com/yzt95/cap/issues">BUG反馈</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link text-light" href="#">企业服务</a>
+										<a class="nav-link text-light" target="_blank" href="https://yzt.cool/links">友情链接</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link text-light" href="#">联系我们</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">免责声明</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link text-light" href="#">友情链接</a>
+										<a class="nav-link text-light" target="_blank" href="https://cfd.yzt.cool/">CFD小工具</a>
 									</li>
 								</ul>
 							</div>
@@ -175,19 +172,16 @@
 							<div class="col">
 								<ul class="nav btn-group-vertical company-info">
 									<li class="nav-item text-white-50">
-										公司地址：北京市朝阳区大屯路东金泉时代3-2708北京牛客科技有限公司
+										联系方式：codeandpeace@qq.com
 									</li>
 									<li class="nav-item text-white-50">
-										联系方式：010-60728802(电话)&nbsp;&nbsp;&nbsp;&nbsp;admin@nowcoder.com
+										CodeAndPeace © 2020 All rights reserved
 									</li>
+									<!--
 									<li class="nav-item text-white-50">
-										牛客科技©2018 All rights reserved
+										京ICP备14055008号-4
 									</li>
-									<li class="nav-item text-white-50">
-										京ICP备14055008号-4 &nbsp;&nbsp;&nbsp;&nbsp;
-										<img src="http://static.nowcoder.com/company/images/res/ghs.png" style="width:18px;" />
-										京公网安备 11010502036488号
-									</li>
+									-->
 								</ul>
 							</div>
 						</div>

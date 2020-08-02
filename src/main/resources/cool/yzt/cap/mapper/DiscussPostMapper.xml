@@ -21,7 +21,8 @@
     <select id="selectAllByUserId" resultType="DiscussPost">
         select <include refid="selectFields"/>
         from discuss_post
-        where user_id = #{userId}
+        where user_id = #{userId} and status != 2
+        order by type desc, create_time desc
     </select>
 
     <select id="selectCountOutsideBlacklist" resultType="int">

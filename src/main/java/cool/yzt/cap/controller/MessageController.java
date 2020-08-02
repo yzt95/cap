@@ -72,7 +72,7 @@ public class MessageController {
         }
 
         start = start==null ? 1 : start;
-        limit = limit==null ? 5 : limit;
+        limit = limit==null ? 15 : limit;
         PageBean pageBean = messageService.getMessageDetail(conversationId,start,limit);
         if (pageBean==null) return "redirect:/letter/list";
 

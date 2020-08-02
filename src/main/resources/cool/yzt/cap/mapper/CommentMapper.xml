@@ -31,5 +31,12 @@
         where status=0 and entity_type=#{entityType} and entity_id=#{entityId}
     </select>
 
+    <select id="selectByUserId" resultType="Comment">
+        select <include refid="selectFields"></include>
+        from comment
+        where user_id=#{userId} and entity_type=#{entityType} and status=0
+        order by create_time desc
+    </select>
+
 
 </mapper>

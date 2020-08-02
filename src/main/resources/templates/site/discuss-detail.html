@@ -51,7 +51,7 @@
 
 				<!-- 作者 -->
 				<div class="media pb-3 border-bottom">
-					<a th:href="@{|/user/profile/${user.username}|}">
+					<a th:href="@{|/user/${user.username}/profile|}">
 						<img th:src="@{(${user.headerUrl})}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 					</a>
 					<div class="media-body">
@@ -73,16 +73,16 @@
 					</div>
 				</div>
 
-
-
 				<!-- 正文 -->
 				<div  class="col-lg-12" id="post-content">
-					<textarea  th:text="${post.content}" style="display:none;">  </textarea>
+					<textarea  th:text="${post.content}" style="display:none;">
+					</textarea>
 				</div>
 				<script type="text/javascript">
 					$(function() {
 						editormd.markdownToHTML("post-content", {
 							emoji : true,
+							tex : true,
 						});
 					});
 				</script>
@@ -105,7 +105,7 @@
 					<!-- 第1条回帖 -->
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="commentInfo:${pageBean.contents}">
 
-						<a th:href="@{|/user/profile/${commentInfo.user.username}|}">
+						<a th:href="@{|/user/${commentInfo.user.username}/profile|}">
 							<img th:src="${commentInfo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="用户头像" >
 						</a>
 

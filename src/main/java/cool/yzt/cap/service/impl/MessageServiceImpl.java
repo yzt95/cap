@@ -11,6 +11,7 @@ import cool.yzt.cap.mapper.MessageMapper;
 import cool.yzt.cap.mapper.UserMapper;
 import cool.yzt.cap.service.MessageService;
 import cool.yzt.cap.util.GeneralUtil;
+import cool.yzt.cap.util.PageBeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,6 @@ class MessageServiceImpl implements MessageService {
                     sb.append(userId).append("_").append(friendId);
                 }
                 String conversationId = GeneralUtil.md5(sb.toString());
-                //String conversationId = sb.toString();
                 content.put("unreadCount",messageMapper.selectUnreadCount(userId,conversationId));
                 content.put("count",messageMapper.selectMessageCount(conversationId));
                 content.put("friend",friend);
@@ -56,17 +56,7 @@ class MessageServiceImpl implements MessageService {
                 contents.add(content);
             }
         }
-        PageBean pageBean = new PageBean();
-        pageBean.setContents(contents);
-        pageBean.setCurrent(pageInfo.getPageNum());
-        pageBean.setSize(pageInfo.getPageSize());
-        pageBean.setTotalContent(pageInfo.getTotal());
-        pageBean.setTotalPage(pageInfo.getPages());
-        pageBean.setPrePage(pageInfo.getPrePage());
-        pageBean.setNextPage(pageInfo.getNextPage());
-        pageBean.setFirst(pageInfo.isIsFirstPage());
-        pageBean.setLast(pageInfo.isIsLastPage());
-        return pageBean;
+        return PageBeanUtil.getPageBean(pageInfo,contents);
     }
 
     @Override
@@ -80,23 +70,13 @@ class MessageServiceImpl implements MessageService {
         List<Message> messages = messageMapper.selectMessage(conversationId);
         PageInfo<Message> pageInfo = new PageInfo<>(messages);
         List<Map<String, Object>> contents = new ArrayList<>();
-        PageBean pageBean = new PageBean();
-        pageBean.setContents(contents);
-        pageBean.setCurrent(pageInfo.getPageNum());
-        pageBean.setSize(pageInfo.getPageSize());
-        pageBean.setTotalContent(pageInfo.getTotal());
-        pageBean.setTotalPage(pageInfo.getPages());
-        pageBean.setPrePage(pageInfo.getPrePage());
-        pageBean.setNextPage(pageInfo.getNextPage());
-        pageBean.setFirst(pageInfo.isIsFirstPage());
-        pageBean.setLast(pageInfo.isIsLastPage());
         if(messages!=null&&!messages.isEmpty()) {
             for(Message message : messages) {
                 Map<String,Object> content = new HashMap<>();
                 content.put("message",message);
                 contents.add(content);
             }
-            return pageBean;
+            return PageBeanUtil.getPageBean(pageInfo,contents);
         }
         return null;
     }

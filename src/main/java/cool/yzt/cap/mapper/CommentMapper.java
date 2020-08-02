@@ -13,5 +13,5 @@ public interface CommentMapper {
     List<Comment> selectByEntity(@Param("entityType") int entityType, @Param("entityId") int entityId);
     int insert(Comment comment);
     int selectCountByEntity(@Param("entityType") int entityType, @Param("entityId") int entityId);
-
+    List<Comment> selectByUserId(@Param("userId") int userId,@Param("entityType") int entityType);
 }

@@ -89,7 +89,12 @@ public class PageBean implements Serializable {
 
     public int getFrom() {
         if(current<5) return 1;
-        if(totalPage-current<6) return totalPage-9;
+        if(totalPage-current<6) {
+            if(totalPage>9) {
+                return totalPage-9;
+            }
+            return 1;
+        }
         return current-3;
     }
 

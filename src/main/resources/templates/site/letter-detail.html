@@ -81,7 +81,7 @@
 							 th:if="${content.message.fromId==friend.id}">
 							<div class="toast-header">
 								<div class="mr-auto">
-									<a th:href="@{|/user/profile/${friend.username}|}">
+									<a th:href="@{|/user/${friend.username}/profile|}">
 										<img th:src="${friend.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
 									</a>
 								</div>
@@ -103,7 +103,7 @@
 								</div>
 
 								<div>
-									<a href="profile.html" >
+									<a th:href="@{|/user/${friend.username}/profile|}" >
 										<img th:src="${self.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
 									</a>
 								</div>

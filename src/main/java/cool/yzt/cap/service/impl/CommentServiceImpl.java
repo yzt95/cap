@@ -12,6 +12,7 @@ import cool.yzt.cap.service.CommentService;
 import cool.yzt.cap.service.DiscussPostService;
 import cool.yzt.cap.service.LikeService;
 import cool.yzt.cap.service.UserService;
+import cool.yzt.cap.util.PageBeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -78,17 +79,7 @@ public class CommentServiceImpl implements CommentService, MessageConstant {
                 commentContents.add(commentContent);
             }
         }
-        PageBean pageBean = new PageBean();
-        pageBean.setContents(commentContents);
-        pageBean.setCurrent(pageInfo.getPageNum());
-        pageBean.setSize(pageInfo.getPageSize());
-        pageBean.setTotalContent(pageInfo.getTotal());
-        pageBean.setTotalPage(pageInfo.getPages());
-        pageBean.setPrePage(pageInfo.getPrePage());
-        pageBean.setNextPage(pageInfo.getNextPage());
-        pageBean.setFirst(pageInfo.isIsFirstPage());
-        pageBean.setLast(pageInfo.isIsLastPage());
-        return pageBean;
+        return PageBeanUtil.getPageBean(pageInfo,commentContents);
     }
 
     @Override
@@ -97,7 +88,7 @@ public class CommentServiceImpl implements CommentService, MessageConstant {
         if(comment==null) {
             throw new RuntimeException("评论不能为空");
         }
-
+        // 转码
         comment.setContent(HtmlUtil.escape(comment.getContent()));
 
         int ret = commentMapper.insert(comment);
@@ -108,5 +99,24 @@ public class CommentServiceImpl implements CommentService, MessageConstant {
         }
 
         return ret;
+    }
+
+    @Override
+    public PageBean findByUserId(int userId, int start, int limit) {
+        PageHelper.startPage(start,limit);
+        List<Comment> comments = commentMapper.selectByUserId(userId,1);
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments);
+        List<Map<String,Object>> contents = new ArrayList<>();
+        if(comments!=null) {
+            for(Comment comment : comments) {
+                Map<String,Object> content = new HashMap<>();
+                content.put("date",comment.getCreateTime());
+                content.put("title",discussPostService.findById(comment.getEntityId()).getTitle());
+                content.put("content",comment.getContent());
+                content.put("postId",comment.getEntityId());
+                contents.add(content);
+            }
+        }
+        return PageBeanUtil.getPageBean(pageInfo,contents);
     }
 }

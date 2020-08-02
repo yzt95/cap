@@ -3,14 +3,14 @@ package cool.yzt.cap.controller;
 import cn.hutool.core.io.IoUtil;
 import cool.yzt.cap.annotation.LoginRequired;
 import cool.yzt.cap.constant.MessageConstant;
+import cool.yzt.cap.dto.PageBean;
 import cool.yzt.cap.entity.User;
-import cool.yzt.cap.service.LikeService;
-import cool.yzt.cap.service.LoginTicketService;
-import cool.yzt.cap.service.UserService;
+import cool.yzt.cap.service.*;
 import cool.yzt.cap.util.GeneralUtil;
 import cool.yzt.cap.util.RedisKeyUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +34,19 @@ public class UserController implements MessageConstant {
     private LikeService likeService;
 
     @Autowired
+    private DiscussPostService discussPostService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
     private UserHolder userHolder;
 
     @Autowired
     private LoginTicketService loginTicketService;
+
+    @Autowired
+    private FollowService followService;
 
     @Value("${path.upload}")
     private String uploadPath;
@@ -143,39 +152,103 @@ public class UserController implements MessageConstant {
     }
 
 
-    @GetMapping("/profile/{username}")
+    @GetMapping("/{username}/profile")
     public String getProfilePage(@PathVariable("username")String username,Model model) {
-        User user = userHolder.get();
         User targetUser = userService.findByUsername(username);
+        // 目标用户不存在
+        if(targetUser==null) {
+            return "error/404";
+        }
+        User user = userHolder.get();
+
+        model.addAttribute("likeCount",likeService.findUserLikeCount(targetUser.getId()));
+        model.addAttribute("followerCount",followService.findFollowerCount(targetUser.getId()));
+        model.addAttribute("followedCount",followService.findFollowedCount(targetUser.getId()));
+        // 当前用户未登录
         if(user==null) {
-            if(targetUser==null) {
-                return "error/404";
-            }else {
-                model.addAttribute("other",true);
-                model.addAttribute("loggedIn",false);
-                model.addAttribute("user",targetUser);
-                model.addAttribute("likeCount",likeService.findUserLikeCount(targetUser.getId()));
-                return "site/profile";
-            }
+            model.addAttribute("loggedIn",false);
+            model.addAttribute("other",true);
+            model.addAttribute("user",targetUser);
+            model.addAttribute("isFollow",false);
+
         } else {
             model.addAttribute("loggedIn",true);
-            if(targetUser==null) {
-                return "error/404";
+            model.addAttribute("user",targetUser);
+            if(user.getUsername().equals(targetUser.getUsername())) {
+                model.addAttribute("other",false);
+                model.addAttribute("isFollow",false);
             }else {
-               if(user.getUsername().equals(targetUser.getUsername())) {
-                   model.addAttribute("other",false);
-                   model.addAttribute("user",user);
-                   model.addAttribute("likeCount",likeService.findUserLikeCount(user.getId()));
-                   return "site/profile";
-               }else {
-                   model.addAttribute("other",true);
-                   model.addAttribute("user",targetUser);
-                   model.addAttribute("likeCount",likeService.findUserLikeCount(targetUser.getId()));
-                   return "site/profile";
-               }
+                model.addAttribute("other",true);
+                model.addAttribute("isFollow",followService.isFollow(user.getId(),targetUser.getId()));
             }
         }
+        return "site/profile";
     }
+
+    @GetMapping("/{username}/post")
+    public String redirectPostListPage(@PathVariable("username") String username) {
+        return ("redirect:/user/" + username + "/post/1");
+    }
+
+
+    @GetMapping("/{username}/post/{page}")
+    public String getPostListPage(@PathVariable("username") String username,
+                                  @PathVariable("page") Integer start,
+                                  Integer limit,
+                                  Model model) {
+        User user = userHolder.get();
+        if(user==null) {
+            return "site/login";
+        }
+        start = start==null ? 1 : start;
+        limit = limit==null ? 20 : limit;
+
+        PageBean pageBean = new PageBean();
+        if(user.getUsername().equals(username)) {
+            pageBean = discussPostService.findByUserId(user.getId(),start,limit);
+            model.addAttribute("isSelf",true);
+            model.addAttribute("username",user.getUsername());
+        }else {
+            User targetUser = userService.findByUsername(username);
+            if(targetUser==null) {
+                return "redirect:index";
+            }else {
+                pageBean = discussPostService.findByUserId(targetUser.getId(),start,limit);
+                model.addAttribute("isSelf",false);
+                model.addAttribute("username",targetUser.getUsername());
+            }
+        }
+        model.addAttribute("pageBean",pageBean);
+        return "site/my-post";
+    }
+
+
+    @GetMapping("/{username}/comment")
+    public String redirectCommentListPage(@PathVariable("username") String username) {
+        return ("redirect:/user/" + username + "/comment/1");
+    }
+
+    @GetMapping("{username}/comment/{page}")
+    public String getCommentListPage(@PathVariable("username") String username,
+                                     @PathVariable("page") Integer start,
+                                     Integer limit,
+                                     Model model) {
+        User user = userHolder.get();
+        if(user==null) {
+            return "site/login";
+        }
+        if(!user.getUsername().equals(username)) {
+            return "redirect:/index";
+        }
+        start = start==null ? 1 : start;
+        limit = limit==null ? 6 : limit;
+        PageBean pageBean = commentService.findByUserId(user.getId(),start,limit);
+        model.addAttribute("pageBean",pageBean);
+        model.addAttribute("username",username);
+        return "site/my-reply";
+    }
+
+
 }
 
 
