@@ -25,4 +25,13 @@ public interface MessageConstant {
     int COMMENT_ENTITY_TYPE_COMMENT = 1;
     int COMMENT_ENTITY_TYPE_REPLY = 2;
 
+
+    String EVENT_COMMENT = "comment";
+    String EVENT_LIKE = "like";
+    String EVENT_FOLLOW = "follow";
+
+    int SYSTEM_NOTICE_TYPE_COMMENT = 1;
+    int SYSTEM_NOTICE_TYPE_LIKE = 2;
+    int SYSTEM_NOTICE_TYPE_FOLLOW = 3;
+
 }

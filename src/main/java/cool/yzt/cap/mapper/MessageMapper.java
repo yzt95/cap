@@ -16,7 +16,7 @@ public interface MessageMapper {
     List<Message> selectConversation(int userId);
 
     /**
-     * 查询某用户的所有的未读消息数，
+     * 查询某用户的所有的未读消息数
      */
     int selectAllUnreadCount(int userId);
 

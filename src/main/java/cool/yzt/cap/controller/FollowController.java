@@ -2,11 +2,14 @@ package cool.yzt.cap.controller;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.github.pagehelper.Page;
+import cool.yzt.cap.constant.MessageConstant;
 import cool.yzt.cap.dto.PageBean;
 import cool.yzt.cap.entity.User;
+import cool.yzt.cap.event.Event;
+import cool.yzt.cap.event.EventProducer;
 import cool.yzt.cap.service.FollowService;
 import cool.yzt.cap.service.UserService;
+import cool.yzt.cap.util.SystemNoticeUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Map;
+
 @Controller
-public class FollowController {
+public class FollowController implements MessageConstant {
     @Autowired
     private FollowService followService;
 
@@ -27,6 +32,9 @@ public class FollowController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EventProducer eventProducer;
 
 
     @ResponseBody
@@ -45,6 +53,12 @@ public class FollowController {
             return JSONUtil.toJsonStr(new JSONObject().set("code",1).set("msg","取关成功"));
         } else {
             followService.follow(user.getId(),followedId);
+            Event event = new Event();
+            event.setTopic(EVENT_FOLLOW);
+            event.setTriggerUserId(user.getId());
+            event.setTargetUserId(followedId);
+            event.setData(SystemNoticeUtil.getFollowNoticeMap(user.getId()));
+            eventProducer.triggerEvent(event);
             return JSONUtil.toJsonStr(new JSONObject().set("code",1).set("msg","关注成功"));
         }
     }
