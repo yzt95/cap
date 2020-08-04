@@ -7,6 +7,7 @@ import cool.yzt.cap.dto.PageBean;
 import cool.yzt.cap.entity.Message;
 import cool.yzt.cap.entity.User;
 import cool.yzt.cap.service.MessageService;
+import cool.yzt.cap.service.SystemNoticeService;
 import cool.yzt.cap.service.UserService;
 import cool.yzt.cap.util.GeneralUtil;
 import cool.yzt.cap.util.UserHolder;
@@ -30,6 +31,9 @@ public class MessageController {
     private MessageService messageService;
 
     @Autowired
+    private SystemNoticeService systemNoticeService;
+
+    @Autowired
     private UserService userService;
 
 
@@ -48,11 +52,11 @@ public class MessageController {
         limit = limit==null ? 10 : limit;
 
         PageBean pageBean = messageService.getMessageList(userId,start,limit);
-        int allUnreadCount = messageService.findAllUnreadCount(userId);
-
+        int messageUnreadCount = messageService.findAllUnreadCount(userId);
+        int noticeUnreadCount = systemNoticeService.findAllUnreadCount(userId);
         model.addAttribute("pageBean",pageBean);
-        model.addAttribute("unreadCount",allUnreadCount);
-
+        model.addAttribute("messageUnreadCount",messageUnreadCount);
+        model.addAttribute("noticeUnreadCount",noticeUnreadCount);
         return "site/letter";
     }
 

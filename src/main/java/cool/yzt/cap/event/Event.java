@@ -26,7 +26,7 @@ public class Event {
     /**
      * 其余信息放在map中
      */
-    private Map<String,Integer> data ;
+    private Map<String,String> data ;
 
     public String getTopic() {
         return topic;
@@ -52,11 +52,11 @@ public class Event {
         this.targetUserId = targetUserId;
     }
 
-    public Map<String, Integer> getData() {
+    public Map<String, String> getData() {
         return data;
     }
 
-    public void setData(Map<String, Integer> data) {
+    public void setData(Map<String, String> data) {
         this.data = data;
     }
 }

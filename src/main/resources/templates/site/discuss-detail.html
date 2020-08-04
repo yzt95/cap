@@ -169,6 +169,7 @@
 												<input type="hidden" name="entityType" value="2">
 												<input type="hidden" name="entityId" th:value="${commentInfo.comment.id}">
 												<input type="hidden" name="targetId" th:value="${replyInfo.fromUser.id}">
+												<input type="hidden" name="authorId" th:value="${replyInfo.fromUser.id}">
 												<div class="text-right mt-2">
 													<button type="submit" class="btn btn-primary btn-sm" onclick="">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
 												</div>
@@ -187,6 +188,7 @@
 										<input type="hidden" name="entityType" value="2">
 										<input type="hidden" name="entityId" th:value="${commentInfo.comment.id}">
 										<input type="hidden" name="targetId" value="0">
+										<input type="hidden" name="authorId" th:value="${commentInfo.user.id}">
 										<div class="text-right mt-2">
 											<button type="submit" class="btn btn-primary btn-sm" onclick="">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
 										</div>
@@ -231,6 +233,7 @@
 					<input type="hidden" name="entityType" value="1">
 					<input type="hidden" name="entityId" th:value="${post.id}">
 					<input type="hidden" name="targetId" value="0">
+					<input type="hidden" name="authorId" th:value="${user.id}">
 					<p class="text-right">
 						<button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>
 					</p>

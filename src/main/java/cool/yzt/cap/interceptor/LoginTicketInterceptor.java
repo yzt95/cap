@@ -3,6 +3,8 @@ package cool.yzt.cap.interceptor;
 import cool.yzt.cap.entity.LoginTicket;
 import cool.yzt.cap.entity.User;
 import cool.yzt.cap.service.LoginTicketService;
+import cool.yzt.cap.service.MessageService;
+import cool.yzt.cap.service.SystemNoticeService;
 import cool.yzt.cap.service.UserService;
 import cool.yzt.cap.util.CookieUtil;
 import cool.yzt.cap.util.UserHolder;
@@ -27,6 +29,13 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
     @Autowired
     private UserHolder userHolder;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private SystemNoticeService systemNoticeService;
+
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ticket = CookieUtil.getValue(request,"loginCode");
@@ -42,6 +51,7 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
                 }
                 if(user!=null) {
                     userHolder.hold(user);
+
                 }
             }
         }
@@ -53,6 +63,10 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
         User user = userHolder.get();
         if(modelAndView!=null && user!=null) {
             modelAndView.addObject("loggedInUser",user);
+            int messageUnreadCount = messageService.findAllUnreadCount(user.getId());
+            int noticeUnreadCount = systemNoticeService.findAllUnreadCount(user.getId());
+            modelAndView.addObject("messageUnreadCount",messageUnreadCount);
+            modelAndView.addObject("noticeUnreadCount",noticeUnreadCount);
         }
     }
 

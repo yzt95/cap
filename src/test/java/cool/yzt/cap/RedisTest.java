@@ -12,6 +12,8 @@ import redis.clients.jedis.Jedis;
 import sun.nio.cs.US_ASCII;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @SpringBootTest
@@ -43,5 +45,20 @@ public class RedisTest {
 
 
 
+    }
+
+    @Test
+    public void test2() {
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("username","张三");
+        map.put("password","123");
+        System.out.println("1:"+map);
+        String jsonStr = JSONUtil.toJsonStr(map);
+        System.out.println("2:"+jsonStr);
+        Map<String,Object> jsonMap = JSONUtil.parseObj(jsonStr);
+        System.out.println("3:"+jsonMap);
+        System.out.println(map.get("username"));
+        System.out.println(jsonMap.get("username"));
     }
 }

@@ -74,51 +74,59 @@
 				</div>
 
 				<!-- 私信列表 -->
-				<ul class="list-unstyled mt-4">
-					<li class="media pb-3 pt-3 mb-2" th:each="content:${pageBean.contents}">
 
-						<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true"
-							 th:if="${content.message.fromId==friend.id}">
-							<div class="toast-header">
-								<div class="mr-auto">
-									<a th:href="@{|/user/${friend.username}/profile|}">
-										<img th:src="${friend.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
-									</a>
+				<div class="row">
+					<div class="col-1">
+
+					</div>
+
+					<div class="col-11">
+						<ul class="list-unstyled mt-4">
+							<li class="media pb-3 pt-3 mb-2" th:each="content:${pageBean.contents}">
+
+								<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true"
+									 th:if="${content.message.fromId==friend.id}">
+									<div class="toast-header">
+										<div class="mr-auto">
+											<a th:href="@{|/user/${friend.username}/profile|}">
+												<img th:src="${friend.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
+											</a>
+										</div>
+
+										<div>
+											<small th:text="${#dates.format(content.message.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-25 15:49:32</small>
+										</div>
+									</div>
+									<div class="toast-body" th:utext="${content.message.content}">
+										君不见, 黄河之水天上来, 奔流到海不复回!
+									</div>
 								</div>
 
-								<div>
-									<small th:text="${#dates.format(content.message.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-25 15:49:32</small>
+								<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true"
+									 th:if="${content.message.fromId==self.id}" style="right: 1px">
+									<div class="toast-header">
+										<div class="mr-auto">
+											<small th:text="${#dates.format(content.message.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-25 15:49:32</small>
+										</div>
+
+										<div>
+											<a th:href="@{|/user/${friend.username}/profile|}" >
+												<img th:src="${self.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
+											</a>
+										</div>
+
+									</div>
+									<div class="toast-body text-right" th:utext="${content.message.content}">
+										天生我才必有用, 千金散尽还复来!
+									</div>
 								</div>
-							</div>
-							<div class="toast-body" th:utext="${content.message.content}">
-								君不见, 黄河之水天上来, 奔流到海不复回!
-							</div>
-						</div>
-
-						<div class="toast show d-lg-block" role="alert" aria-live="assertive" aria-atomic="true"
-							 th:if="${content.message.fromId==self.id}" style="right: 1px">
-							<div class="toast-header">
-								<div class="mr-auto">
-									<small th:text="${#dates.format(content.message.createTime,'yyyy-MM-dd HH:mm:ss')}">2019-04-25 15:49:32</small>
-								</div>
-
-								<div>
-									<a th:href="@{|/user/${friend.username}/profile|}" >
-										<img th:src="${self.headerUrl}" class="mr-4 rounded-circle user-header" alt="用户头像" >
-									</a>
-								</div>
-
-							</div>
-							<div class="toast-body" th:utext="${content.message.content}">
-								天生我才必有用, 千金散尽还复来!
-							</div>
-						</div>
-					</li>
+							</li>
 
 
 
-				</ul>
-
+						</ul>
+					</div>
+				</div>
 
 
 				<!--分页-->
@@ -146,7 +154,7 @@
 					</ul>
 				</nav>
 
-
+			</div>
 		</div>
 	</div>
 

@@ -57,7 +57,7 @@ public class FollowController implements MessageConstant {
             event.setTopic(EVENT_FOLLOW);
             event.setTriggerUserId(user.getId());
             event.setTargetUserId(followedId);
-            event.setData(SystemNoticeUtil.getFollowNoticeMap(user.getId()));
+            event.setData(SystemNoticeUtil.getFollowNoticeMap(user.getId(),user.getUsername()));
             eventProducer.triggerEvent(event);
             return JSONUtil.toJsonStr(new JSONObject().set("code",1).set("msg","关注成功"));
         }

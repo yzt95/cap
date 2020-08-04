@@ -18,5 +18,37 @@
         values(#{toId},#{content},#{type},#{status},#{createTime})
     </insert>
 
+    <select id="selectLastByType" resultType="SystemNotice">
+        select <include refid="selectFields"></include>
+        from system_notice
+        where id in (
+        select max(id)
+        from system_notice
+        where to_id = #{userId} and type = #{type} and status !=2
+        )
+    </select>
+
+    <select id="selectByType" resultType="SystemNotice">
+        select <include refid="selectFields"></include>
+        from system_notice
+        where to_id = #{userId} and type = #{type}
+        order by id desc
+    </select>
+
+    <select id="selectUnreadCount" resultType="int">
+        select count(id) from system_notice where status=0 and to_id=#{userId} and type = #{type}
+    </select>
+
+    <select id="selectAllCountByType" resultType="int">
+        select count(id) from system_notice where status!=2 and  to_id=#{userId} and type = #{type}
+    </select>
+
+    <select id="selectAllUnreadCount" resultType="int">
+        select count(id) from system_notice where status=0 and  to_id=#{userId}
+    </select>
+
+    <update id="updateStatus">
+        update system_notice set status = #{status} where to_id = #{userId} and type = #{type}
+    </update>
 
 </mapper>

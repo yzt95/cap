@@ -1,8 +1,12 @@
 package cool.yzt.cap.controller;
 
 import cool.yzt.cap.dto.PageBean;
+import cool.yzt.cap.entity.User;
 import cool.yzt.cap.service.DiscussPostService;
 
+import cool.yzt.cap.service.MessageService;
+import cool.yzt.cap.service.SystemNoticeService;
+import cool.yzt.cap.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +18,15 @@ public class HomeController {
 
     @Autowired
     private DiscussPostService discussPostService;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private SystemNoticeService systemNoticeService;
+
+    @Autowired
+    private UserHolder userHolder;
 
 
     @GetMapping({"/","/index"})
@@ -28,6 +41,7 @@ public class HomeController {
 
         PageBean pageBean = discussPostService.getPageBean(page,pageSize);
         model.addAttribute("pageBean",pageBean);
+        User user = userHolder.get();
         return "index";
     }
 

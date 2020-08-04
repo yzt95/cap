@@ -10,6 +10,7 @@ import cool.yzt.cap.service.CommentService;
 import cool.yzt.cap.util.SystemNoticeUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class CommentController implements MessageConstant {
 
     @LoginRequired
     @PostMapping("/comment/add/{postId}")
-    public String addComment(Comment comment, @PathVariable("postId") int postId) {
+    public String addComment(Comment comment, @PathVariable("postId") int postId, @Param("authorId") int authorId) {
         if(StringUtils.isBlank(comment.getContent())) return ("redirect:/post/"+postId);
         User user = userHolder.get();
         comment.setUserId(user.getId());
@@ -40,14 +41,19 @@ public class CommentController implements MessageConstant {
         comment.setCreateTime(new Date());
         commentService.add(comment);
 
-        Event event = new Event();
-        event.setTopic(EVENT_COMMENT);
-        event.setTriggerUserId(user.getId());
-        event.setTargetUserId(comment.getTargetId());
-        Map<String,Integer> data = SystemNoticeUtil.getCommentAndLikeNoticeMap(user.getId()
-                ,comment.getEntityType(),comment.getEntityId(),postId);
-        event.setData(data);
-        eventProducer.triggerEvent(event);
+        if(user.getId()!=authorId) {
+            Event event = new Event();
+            event.setTopic(EVENT_COMMENT);
+            event.setTriggerUserId(user.getId());
+            event.setTargetUserId(authorId);
+            Map<String,String> data = SystemNoticeUtil.getCommentAndLikeNoticeMap(user.getId()
+                    ,comment.getEntityType(),comment.getEntityId(),postId,user.getUsername());
+            event.setData(data);
+            eventProducer.triggerEvent(event);
+        }
+
+
+
         return ("redirect:/post/"+postId);
     }
 

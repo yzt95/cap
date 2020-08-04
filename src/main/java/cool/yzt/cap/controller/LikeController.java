@@ -53,8 +53,8 @@ public class LikeController implements MessageConstant {
             event.setTopic(EVENT_LIKE);
             event.setTriggerUserId(user.getId());
             event.setTargetUserId(authorId);
-            Map<String,Integer> data = SystemNoticeUtil.getCommentAndLikeNoticeMap(user.getId()
-                    ,entityType,entityId,postId);
+            Map<String,String> data = SystemNoticeUtil.getCommentAndLikeNoticeMap(user.getId()
+                    ,entityType,entityId,postId,user.getUsername());
             event.setData(data);
             eventProducer.triggerEvent(event);
         }
