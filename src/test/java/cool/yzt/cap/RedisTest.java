@@ -48,6 +48,13 @@ public class RedisTest {
     }
 
     @Test
+    public void saveTest() {
+        Jedis jedis = RedisUtil.getJedis();
+        jedis.save();
+        RedisUtil.close(jedis);
+    }
+
+    @Test
     public void test2() {
 
         Map<String,Object> map = new HashMap<>();

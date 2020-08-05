@@ -15,7 +15,6 @@ public class EventProducer {
     @Autowired
     private KafkaTemplate<String,String> kafkaTemplate;
 
-    @Autowired
     private static final Logger logger = LoggerFactory.getLogger(EventProducer.class);
 
     public void triggerEvent(Event event) {

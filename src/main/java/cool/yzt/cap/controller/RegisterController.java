@@ -41,14 +41,22 @@ public class RegisterController implements MessageConstant {
             return "site/register";
         }
 
+
         int checkRegisterResult = userService.checkRegisterUser(user);
 
         if(checkRegisterResult==REGISTER_SUCCESS) {
+
+            long startTime = System.currentTimeMillis();
+
             int registerResult = userService.register(user);
             if(registerResult==REGISTER_SUCCESS) {
                 model.addAttribute("msg","您的账号成功注册,请尽快前往注册邮箱激活账号！");
                 model.addAttribute("flag",true);
             }
+
+            long entTime = System.currentTimeMillis();
+            System.out.println("操作耗时：" + (entTime-startTime)/1000.0 + " 秒");
+
             return "site/operate-result";
         }else {
             if(checkRegisterResult==REGISTER_USERNAME_IS_BLANK) {

@@ -90,7 +90,7 @@
 							</h6>
 							<div>
 								<a th:href="@{/notice/3/1}" th:if="${noticeList.followNotice!=null}" th:text="${noticeList.followNotice.message}">a</a>
-								<div th:if="${noticeList.followNotice==null}">您还没有收到赞</div>
+								<div th:if="${noticeList.followNotice==null}">您还没有收到关注</div>
 								<ul class="d-inline font-size-12 float-right" th:if="${noticeList.followNotice!=null}">
 									<li class="d-inline ml-2"><a th:href="@{/notice/3/1}" class="text-primary">共 <i th:text="${noticeList.followNotice.count}">3</i> 条会话</a></li>
 								</ul>

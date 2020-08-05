@@ -1,5 +1,8 @@
 package cool.yzt.cap.controller;
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import cool.yzt.cap.annotation.LoginRequired;
 import cool.yzt.cap.dto.PageBean;
 import cool.yzt.cap.entity.DiscussPost;
 import cool.yzt.cap.entity.User;
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PostDetailController {
@@ -55,6 +60,58 @@ public class PostDetailController {
         }
         return "site/discuss-detail";
     }
+
+    @LoginRequired
+    @PostMapping("/post/setWonderful")
+    @ResponseBody
+    public String setWonderful(int postId,int targetStatus) {
+        User user = userHolder.get();
+        if(user==null || user.getType()<1) {
+            return JSONUtil.createObj().set("msg","无权访问").toString();
+        }
+        int ret = discussPostService.setWonderful(postId,targetStatus);
+        if(ret==1) {
+            return JSONUtil.createObj().set("code",1).toString();
+        }else {
+            return JSONUtil.createObj().set("code",0).toString();
+        }
+    }
+
+    @LoginRequired
+    @PostMapping("/post/setTop")
+    @ResponseBody
+    public String setTop(int postId,int targetType) {
+        User user = userHolder.get();
+        if(user==null || user.getType()<1) {
+            return JSONUtil.createObj().set("msg","无权访问").toString();
+        }
+        int ret = discussPostService.setTop(postId,targetType);
+        if(ret==1) {
+            return JSONUtil.createObj().set("code",1).toString();
+        }else {
+            return JSONUtil.createObj().set("code",0).toString();
+        }
+    }
+
+    @LoginRequired
+    @PostMapping("/post/setDelete")
+    @ResponseBody
+    public String setDelete(int postId) {
+        User user = userHolder.get();
+        if(user==null || user.getType()<1) {
+            return JSONUtil.createObj().set("msg","无权访问").toString();
+        }
+        int ret = discussPostService.delete(postId);
+        if(ret==1) {
+            return JSONUtil.createObj().set("code",1).toString();
+        }else {
+            return JSONUtil.createObj().set("code",0).toString();
+        }
+    }
+
+
+
+
 
 
 

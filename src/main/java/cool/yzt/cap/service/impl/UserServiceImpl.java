@@ -72,9 +72,15 @@ public class UserServiceImpl implements UserService, MessageConstant {
         user.setActivationCode(GeneralUtil.getUUId());
         user.setHeaderUrl(defaultHeaderUrlPrefix+RandomUtil.randomInt(0,1000)+defaultHeaderUrlSuffix);
         user.setCreateTime(new Date());
+
+
         userMapper.insert(user);
 
+
+
         /*发送验证邮件*/
+
+
         Context context = new Context();
         context.setVariable("username",user.getUsername());
         context.setVariable("email",user.getEmail());
@@ -82,6 +88,8 @@ public class UserServiceImpl implements UserService, MessageConstant {
         context.setVariable("activationUrl",activationUrl);
         String mailContent = templateEngine.process("mail/activation",context);
         MailUtil.send(user.getEmail(),"来自 CodeAndPeace 的邮箱验证",mailContent,true);
+
+
         return REGISTER_SUCCESS;
     }
 

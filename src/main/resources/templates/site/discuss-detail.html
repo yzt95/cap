@@ -24,6 +24,7 @@
 
 	<script th:src="@{/js/global.js}"></script>
 	<script th:src="@{/js/like.js}"></script>
+	<script th:if="${loggedInUser!=null&&loggedInUser.type>=1}" th:src="@{/js/post.js}"></script>
 
 	<title>CodeAndPeace-帖子详情</title>
 </head>
@@ -41,10 +42,11 @@
 				<h6 class="mb-4">
 					<img src="http://static.nowcoder.com/images/img/icons/ico-discuss.png"/>
 					<span th:utext="${post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</span>
-					<div class="float-right">
-						<button type="button" class="btn btn-danger btn-sm">置顶</button>
-						<button type="button" class="btn btn-danger btn-sm">加精</button>
-						<button type="button" class="btn btn-danger btn-sm">删除</button>
+					<div class="float-right" th:if="${loggedInUser!=null&&loggedInUser.type>=1}">
+						<input id="postId" type="hidden" th:value="${post.id}">
+						<button type="button" class="btn btn-danger btn-sm" id="setWonderful" th:text="${post.status==0?'加精':'取消加精'}" th:value="${post.status==0?1:0}">加精</button>
+						<button type="button" class="btn btn-danger btn-sm" id="setTop" th:text="${post.type==0?'置顶':'取消置顶'}" th:value="${post.type==0?1:0}">置顶</button>
+						<button type="button" class="btn btn-danger btn-sm" id="deletePost" th:if="${loggedInUser!=null&&loggedInUser.type>=2}">删除</button>
 					</div>
 				</h6>
 

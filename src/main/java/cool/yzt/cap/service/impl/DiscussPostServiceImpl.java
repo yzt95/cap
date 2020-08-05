@@ -101,4 +101,20 @@ public class DiscussPostServiceImpl implements DiscussPostService {
         }
         return PageBeanUtil.getPageBean(pageInfo,contents);
     }
+
+
+    @Override
+    public int setWonderful(int postId, int status) {
+        return discussPostMapper.updateStatus(postId,status);
+    }
+
+    @Override
+    public int setTop(int postId, int type) {
+        return discussPostMapper.updateType(postId,type);
+    }
+
+    @Override
+    public int delete(int postId) {
+        return discussPostMapper.updateStatus(postId,2);
+    }
 }

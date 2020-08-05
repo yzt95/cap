@@ -13,4 +13,9 @@ public interface DiscussPostService {
     int save(DiscussPost post);
     int updateCommentCount(int postId,int commentCount);
     PageBean findByUserId(int userId,int start, int limit);
+
+    int setTop(int postId,int type);
+    int setWonderful(int postId,int status);
+    int delete(int postId);
+
 }
