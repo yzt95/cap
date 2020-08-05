@@ -10,6 +10,7 @@ import cool.yzt.cap.service.CommentService;
 import cool.yzt.cap.service.DiscussPostService;
 import cool.yzt.cap.service.LikeService;
 import cool.yzt.cap.service.UserService;
+import cool.yzt.cap.task.PostScoreTask;
 import cool.yzt.cap.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,9 +36,12 @@ public class PostDetailController {
     @Autowired
     private UserHolder userHolder;
 
+    @Autowired
+    private PostScoreTask postScoreTask;
+
     @GetMapping("/post/{postId}")
     public String redirectToPostDetail(@PathVariable("postId") int postId) {
-        return ("redirect:/post/"+postId+"/1");
+        return ("forward:/post/"+postId+"/1");
     }
 
     @GetMapping("/post/{postId}/{commentPage}")
@@ -71,6 +75,7 @@ public class PostDetailController {
         }
         int ret = discussPostService.setWonderful(postId,targetStatus);
         if(ret==1) {
+            postScoreTask.recordPostId(postId);
             return JSONUtil.createObj().set("code",1).toString();
         }else {
             return JSONUtil.createObj().set("code",0).toString();
@@ -87,6 +92,7 @@ public class PostDetailController {
         }
         int ret = discussPostService.setTop(postId,targetType);
         if(ret==1) {
+            postScoreTask.recordPostId(postId);
             return JSONUtil.createObj().set("code",1).toString();
         }else {
             return JSONUtil.createObj().set("code",0).toString();
@@ -108,12 +114,4 @@ public class PostDetailController {
             return JSONUtil.createObj().set("code",0).toString();
         }
     }
-
-
-
-
-
-
-
-
 }

@@ -5,6 +5,7 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cool.yzt.cap.entity.Comment;
 import cool.yzt.cap.entity.User;
+import cool.yzt.cap.util.RedisKeyUtil;
 import cool.yzt.cap.util.RedisUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -68,4 +69,17 @@ public class RedisTest {
         System.out.println(map.get("username"));
         System.out.println(jsonMap.get("username"));
     }
+
+    @Test
+    public void test3() {
+        Jedis jedis = RedisUtil.getJedis();
+
+        for (int i = 1; i <=10000 ; i++) {
+            jedis.pfadd("hllTest",String.valueOf(i));
+        }
+        System.out.println(jedis.pfcount("hllTest"));
+        RedisUtil.close(jedis);
+    }
+
+
 }

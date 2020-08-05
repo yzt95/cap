@@ -74,10 +74,12 @@
 					<!-- 筛选条件 -->
 					<ul class="nav nav-tabs mb-3">
 						<li class="nav-item">
-							<div class="nav-link active">最新</div>
+							<div class="nav-link active" th:if="${mode=='newest'}">最新</div>
+							<a class="nav-link" th:href="@{/index}" th:if="${mode=='hottest'}">最新</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">最热</a>
+							<a class="nav-link" th:href="@{/index/hottest/1}" th:if="${mode=='newest'}">最热</a>
+							<div class="nav-link active" th:if="${mode=='hottest'}">最热</div>
 						</li>
 					</ul>
 					<a th:href="@{/publish}"><button type="button" class="btn btn-primary btn-sm position-absolute rt-0"
@@ -115,23 +117,23 @@
 				<nav class="mt-5">
 					<ul class="pagination justify-content-center" th:if="${pageBean.totalContent>0}">
 						<li class="page-item">
-							<a class="page-link" th:href="@{/index/page/1}">首页</a>
+							<a class="page-link" th:href="@{|/index/${mode}/1|}">首页</a>
 						</li>
 
 						<li th:class="|page-item ${pageBean.current==1 ? 'disabled' : ''}|">
-							<a class="page-link" th:href="@{'/index/page/'+${pageBean.current -1}}">上一页</a>
+							<a class="page-link" th:href="@{|/index/${mode}/${pageBean.current -1}|}">上一页</a>
 						</li>
 
 						<li th:class="|page-item ${i==pageBean.current?'active':''}|" th:each="i:${#numbers.sequence(pageBean.from,pageBean.to)}">
-							<a class="page-link" th:href="@{'/index/page/'+${i}}" th:text="${i}">1</a>
+							<a class="page-link" th:href="@{|/index/${mode}/${i}|}" th:text="${i}">1</a>
 						</li>
 
 						<li th:class="|page-item ${pageBean.current==pageBean.totalPage ? 'disabled' : ''}|">
-							<a class="page-link" th:href="@{'/index/page/'+${pageBean.current+1}}">下一页</a>
+							<a class="page-link" th:href="@{|/index/${mode}/${pageBean.current+1}|}">下一页</a>
 						</li>
 
 						<li class="page-item">
-							<a class="page-link" th:href="@{'/index/page/'+${pageBean.totalPage}}">末页</a>
+							<a class="page-link" th:href="@{|/index/${mode}/${pageBean.totalPage}|}">末页</a>
 						</li>
 					</ul>
 				</nav>

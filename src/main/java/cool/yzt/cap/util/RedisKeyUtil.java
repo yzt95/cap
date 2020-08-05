@@ -10,6 +10,7 @@ public class RedisKeyUtil {
     private static final String USER_PREFIX = "user";
     private static final String FOLLOWER_PREFIX = "follower";
     private static final String FOLLOWED_PREFIX = "followed";
+    private static final String CHANGED_POST_PREFIX = "changed:post";
     private static final String SPLIT = ":";
 
 
@@ -37,5 +38,9 @@ public class RedisKeyUtil {
 
     public static String getFollowedKey(int userId) {
         return FOLLOWED_PREFIX + SPLIT + userId;
+    }
+
+    public static String getChangedPostKey() {
+        return CHANGED_POST_PREFIX + SPLIT;
     }
 }

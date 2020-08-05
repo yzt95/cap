@@ -7,6 +7,7 @@ import cool.yzt.cap.entity.User;
 import cool.yzt.cap.event.Event;
 import cool.yzt.cap.event.EventProducer;
 import cool.yzt.cap.service.LikeService;
+import cool.yzt.cap.task.PostScoreTask;
 import cool.yzt.cap.util.SystemNoticeUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class LikeController implements MessageConstant {
 
     @Autowired
     private EventProducer eventProducer;
+
+    @Autowired
+    private PostScoreTask postScoreTask;
 
     @PostMapping("/like")
     @ResponseBody
@@ -58,7 +62,9 @@ public class LikeController implements MessageConstant {
             event.setData(data);
             eventProducer.triggerEvent(event);
         }
-
+        if(entityType==1) {
+            postScoreTask.recordPostId(postId);
+        }
         return json.toString();
     }
 }

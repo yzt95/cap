@@ -13,11 +13,5 @@ public class DiscussPostTest {
     @Autowired
     private DiscussPostService discussPostService;
 
-    @Test
-    public void findAll() {
-        List<DiscussPost> list = discussPostService.findAllOutsideBlacklistByPageNumber(2,3);
-        for(DiscussPost post : list) {
-            System.out.println(post);
-        }
-    }
+
 }

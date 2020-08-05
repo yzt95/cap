@@ -7,6 +7,7 @@ import cool.yzt.cap.service.DiscussPostService;
 import cool.yzt.cap.service.MessageService;
 import cool.yzt.cap.service.SystemNoticeService;
 import cool.yzt.cap.util.UserHolder;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,17 +32,24 @@ public class HomeController {
 
     @GetMapping({"/","/index"})
     public String redirectToIndex() {
-        return "redirect:/index/page/1";
+        return "forward:/index/newest/1";
     }
 
-    @GetMapping("/index/page/{page}")
-    public String getIndexPage(@PathVariable("page") Integer page,Integer pageSize,Model model) {
+    @GetMapping("/index/{mode}/{page}")
+    public String getIndexPage(@PathVariable("page") Integer page, @PathVariable("mode") String mode, Integer pageSize, Model model) {
         page = page==null ? 1 : page;
         pageSize = pageSize==null ? 15 : pageSize;
-
-        PageBean pageBean = discussPostService.getPageBean(page,pageSize);
+        mode = mode==null ? "newest" : mode;
+        PageBean pageBean;
+        if(mode.equals("newest")) {
+            pageBean = discussPostService.getPageBean(page,pageSize,0);
+        }else if(mode.equals("hottest")) {
+            pageBean = discussPostService.getPageBean(page,pageSize,1);
+        }else {
+            return "error/404";
+        }
         model.addAttribute("pageBean",pageBean);
-        User user = userHolder.get();
+        model.addAttribute("mode",mode);
         return "index";
     }
 

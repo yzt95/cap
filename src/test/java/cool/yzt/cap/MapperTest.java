@@ -67,11 +67,7 @@ public class MapperTest {
         System.out.println(userMapper.updateHeaderUrl(150,"cool.yzt"));
     }
 
-    @Test
-    public void testDiscussPostMapperSelect() {
-        List<DiscussPost> list = discussPostMapper.selectAllOutsideBlacklist();
 
-    }
 
     @Test
     public void testLoginTicketMapperInsert() {

@@ -7,6 +7,7 @@ import cool.yzt.cap.entity.User;
 import cool.yzt.cap.event.Event;
 import cool.yzt.cap.event.EventProducer;
 import cool.yzt.cap.service.CommentService;
+import cool.yzt.cap.task.PostScoreTask;
 import cool.yzt.cap.util.SystemNoticeUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,9 @@ public class CommentController implements MessageConstant {
     @Autowired
     private EventProducer eventProducer;
 
+    @Autowired
+    private PostScoreTask postScoreTask;
+
     @LoginRequired
     @PostMapping("/comment/add/{postId}")
     public String addComment(Comment comment, @PathVariable("postId") int postId, @Param("authorId") int authorId) {
@@ -51,9 +55,7 @@ public class CommentController implements MessageConstant {
             event.setData(data);
             eventProducer.triggerEvent(event);
         }
-
-
-
+        postScoreTask.recordPostId(postId);
         return ("redirect:/post/"+postId);
     }
 

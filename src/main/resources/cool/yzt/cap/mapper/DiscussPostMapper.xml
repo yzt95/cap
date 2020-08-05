@@ -15,7 +15,14 @@
         select <include refid="selectFields"/>
         from discuss_post
         where status != 2
-        order by type desc, create_time desc
+        <choose>
+            <when test="mode==0">
+                order by type desc, create_time desc
+            </when>
+            <when test="mode==1">
+                order by type desc, score desc, create_time desc
+            </when>
+        </choose>
     </select>
 
     <select id="selectAllByUserId" resultType="DiscussPost">
@@ -56,6 +63,12 @@
     <update id="updateStatus">
         update discuss_post
         set status = #{status}
+        where id = #{postId}
+    </update>
+
+    <update id="updateScore">
+        update discuss_post
+        set score = #{score}
         where id = #{postId}
     </update>
 
