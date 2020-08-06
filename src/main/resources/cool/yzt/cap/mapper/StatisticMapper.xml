@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cool.yzt.cap.mapper.StatisticMapper">
+
+    <sql id="insertFields">
+        date, uv, dau
+    </sql>
+
+    <sql id="selectFields">
+        id, date, uv, dau
+    </sql>
+    
+    <insert id="insert">
+        insert into statistic_data 
+        (<include refid="insertFields"></include>)
+        values (#{date}, #{uv}, #{dau})
+    </insert>
+    
+    <select id="selectByDate" resultType="StatisticData">
+        select <include refid="selectFields"></include>
+        from statistic_data
+        where date = #{date}
+        order by date desc
+    </select>
+
+    <select id="selectForPeriod" resultType="StatisticData">
+        select <include refid="selectFields"></include>
+        from statistic_data
+        where date between #{from} and #{to}
+        order by date desc
+    </select>
+
+</mapper>

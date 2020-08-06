@@ -11,6 +11,10 @@ public class RedisKeyUtil {
     private static final String FOLLOWER_PREFIX = "follower";
     private static final String FOLLOWED_PREFIX = "followed";
     private static final String CHANGED_POST_PREFIX = "changed:post";
+    private static final String UV_PREFIX = "uv";
+    private static final String DAU_PREFIX = "dau";
+    private static final String WAU_PREFIX = "wau";
+    private static final String MAU_PREFIX = "mau";
     private static final String SPLIT = ":";
 
 
@@ -43,4 +47,13 @@ public class RedisKeyUtil {
     public static String getChangedPostKey() {
         return CHANGED_POST_PREFIX + SPLIT;
     }
+
+    public static String getUVKey() {
+        return UV_PREFIX + SPLIT;
+    }
+
+    public static String getDAUKey() {
+        return DAU_PREFIX + SPLIT;
+    }
+
 }

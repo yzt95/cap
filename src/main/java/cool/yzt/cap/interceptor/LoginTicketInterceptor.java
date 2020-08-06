@@ -7,12 +7,14 @@ import cool.yzt.cap.service.MessageService;
 import cool.yzt.cap.service.SystemNoticeService;
 import cool.yzt.cap.service.UserService;
 import cool.yzt.cap.util.CookieUtil;
+import cool.yzt.cap.util.GeneralUtil;
 import cool.yzt.cap.util.UserHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -51,7 +53,6 @@ public class LoginTicketInterceptor implements HandlerInterceptor {
                 }
                 if(user!=null) {
                     userHolder.hold(user);
-
                 }
             }
         }

@@ -19,7 +19,6 @@ public class PostScoreTask {
     @Autowired
     private DiscussPostService discussPostService;
 
-
     @Async
     public void recordPostId(int postId) {
         Jedis jedis = RedisUtil.getJedis();
@@ -28,7 +27,8 @@ public class PostScoreTask {
         RedisUtil.close(jedis);
     }
 
-    //@Scheduled(cron = "0 0 6 * * ?")
+    // 每隔6小时执行一次
+    @Scheduled(cron = "0 0 0/6 * * ?")
     //@Scheduled(cron = "0 0/3 * * * ?")
     public void calculateScore() {
         Jedis jedis = RedisUtil.getJedis();

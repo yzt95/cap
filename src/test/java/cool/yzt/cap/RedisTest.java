@@ -77,6 +77,12 @@ public class RedisTest {
         for (int i = 1; i <=10000 ; i++) {
             jedis.pfadd("hllTest",String.valueOf(i));
         }
+        for (int i = 5000; i < 15000; i++) {
+            jedis.pfadd("hllTest",String.valueOf(i));
+        }
+        for (int i = 10000; i < 20000; i++) {
+            jedis.pfadd("hllTest",String.valueOf(i));
+        }
         System.out.println(jedis.pfcount("hllTest"));
         RedisUtil.close(jedis);
     }
