@@ -51,8 +51,4 @@ public class StatisticsController {
         model.addAttribute("data",list);
         return "site/admin/data";
     }
-
-
-
-
 }

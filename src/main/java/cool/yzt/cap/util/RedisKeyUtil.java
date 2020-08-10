@@ -13,8 +13,6 @@ public class RedisKeyUtil {
     private static final String CHANGED_POST_PREFIX = "changed:post";
     private static final String UV_PREFIX = "uv";
     private static final String DAU_PREFIX = "dau";
-    private static final String WAU_PREFIX = "wau";
-    private static final String MAU_PREFIX = "mau";
     private static final String SPLIT = ":";
 
 

@@ -3,6 +3,7 @@ package cool.yzt.cap.event;
 import cn.hutool.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EventProducer {
+    //@Autowired
+    //private KafkaTemplate<String,String> kafkaTemplate;
+
     @Autowired
-    private KafkaTemplate<String,String> kafkaTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(EventProducer.class);
 
@@ -22,6 +26,8 @@ public class EventProducer {
             logger.error("不可以发送空消息");
             return;
         }
-        kafkaTemplate.send(event.getTopic(), JSONUtil.toJsonStr(event));
+        //kafkaTemplate.send(event.getTopic(), JSONUtil.toJsonStr(event));
+        rabbitTemplate.convertAndSend("system_notice", event.getTopic(), JSONUtil.toJsonStr(event));
     }
+
 }

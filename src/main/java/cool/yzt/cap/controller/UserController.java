@@ -84,7 +84,6 @@ public class UserController implements MessageConstant {
 
         fileName = GeneralUtil.getUUId()+suffix;
         File file = new File(uploadPath+fileName);
-        System.out.println(uploadPath+fileName);
         try {
             headerImage.transferTo(file);
         } catch (IOException e) {

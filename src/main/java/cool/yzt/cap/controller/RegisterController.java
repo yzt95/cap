@@ -22,7 +22,7 @@ public class RegisterController implements MessageConstant {
 
     @GetMapping("/register")
     public String getRegisterPage() {
-        return "/site/register";
+        return "site/register";
     }
 
     @PostMapping("/register")

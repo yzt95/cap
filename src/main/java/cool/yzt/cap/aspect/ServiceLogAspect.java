@@ -28,9 +28,5 @@ public class ServiceLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String ip = request.getRemoteHost();
-
-
     }
-
-
 }

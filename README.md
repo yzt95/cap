@@ -1,5 +1,5 @@
 ## 基于 SpringBoot 开发的论坛社区项目 *Code And Peace*
-个人项目，还在开发过程中
+个人项目
 
 ## 主要技术栈
 ### 后台
@@ -8,7 +8,7 @@
 * MyBatis
 * MySQL
 * Redis
-* Kafka
+* RabbitMQ
 
 ### 前台
 * Thymeleaf
@@ -23,9 +23,10 @@
 技术略菜，经验不多，项目还有很多未完善之处，慢慢一步步来
 
 ## TODO
-1. 优化未读消息显示模块，现在每一次请求都需要到数据库查询一次
-2. user 表分成 user_account 和 user_info 表，用 redis 缓存登录用户的 user_info
 
+**08-10** 准备项目的全面复盘、测试和优化
+
+**08-05** 基本功能均已实现
 
 
 
