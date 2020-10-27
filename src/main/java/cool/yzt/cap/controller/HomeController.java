@@ -41,7 +41,7 @@ public class HomeController {
 
     @GetMapping({"/","/index"})
     public String redirectToIndex() {
-        return "forward:/index/newest/1";
+        return "forward:/index/hottest/1";
     }
 
     @GetMapping("/index/{mode}/{page}")

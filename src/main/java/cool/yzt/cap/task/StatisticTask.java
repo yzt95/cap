@@ -19,16 +19,18 @@ public class StatisticTask {
     @Autowired
     private StatisticService statisticService;
 
-    // 每天能晚上23：58执行
-    @Scheduled(cron = "0 58 23 ? * *")
+    // 每天能晚上23：59执行
+    @Scheduled(cron = "0 59 23 ? * *")
     public void refreshStatisticData() {
         Date date = new Date();
         String uvKey = RedisKeyUtil.getUVKey();
         String dauKey = RedisKeyUtil.getDAUKey();
         Jedis jedis = RedisUtil.getJedis();
-        long uv = jedis.scard(uvKey);
+        //long uv = jedis.scard(uvKey);
+        long uv = jedis.pfcount(uvKey);
         jedis.del(uvKey);
-        long dau = jedis.scard(dauKey);
+        //long dau = jedis.scard(dauKey);
+        long dau = jedis.pfcount(dauKey);
         jedis.del(dauKey);
         RedisUtil.close(jedis);
         statisticService.save(uv,dau,date);

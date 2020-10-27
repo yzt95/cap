@@ -1,0 +1,5 @@
+spring.rabbitmq.host=121.36.37.76
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=test
+spring.rabbitmq.password=rmqTEST@hwy
+spring.rabbitmq.virtual-host=/cap_test

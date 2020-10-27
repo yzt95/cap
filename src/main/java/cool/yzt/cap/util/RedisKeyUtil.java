@@ -47,11 +47,11 @@ public class RedisKeyUtil {
     }
 
     public static String getUVKey() {
-        return UV_PREFIX + SPLIT;
+        return UV_PREFIX;
     }
 
     public static String getDAUKey() {
-        return DAU_PREFIX + SPLIT;
+        return DAU_PREFIX;
     }
 
 }

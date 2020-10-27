@@ -1,5 +1,9 @@
 package cool.yzt.cap.service.impl;
 import cn.hutool.http.HtmlUtil;
+import com.github.benmanes.caffeine.cache.CacheLoader;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import cool.yzt.cap.dto.PageBean;
@@ -14,14 +18,19 @@ import cool.yzt.cap.service.UserService;
 import cool.yzt.cap.util.PageBeanUtil;
 import cool.yzt.cap.util.RedisKeyUtil;
 import cool.yzt.cap.util.RedisUtil;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class DiscussPostServiceImpl implements DiscussPostService {
@@ -37,8 +46,46 @@ public class DiscussPostServiceImpl implements DiscussPostService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Value("${caffeine.posts.max-size}")
+    private int cacheMaxSize;
+
+    @Value("${caffeine.posts.expire-seconds}")
+    private int cacheExpireTime;
+
+    private LoadingCache<String,PageBean> hotPostListCache ;
+
+    @PostConstruct
+    public void init() {
+        hotPostListCache = Caffeine.newBuilder()
+                .maximumSize(cacheMaxSize)
+                .expireAfterWrite(cacheExpireTime, TimeUnit.SECONDS)
+                .build(new CacheLoader<String, PageBean>() {
+            @Nullable
+            @Override
+            public PageBean load(@NonNull String s) throws Exception {
+
+                String start = s.split(":")[0];
+                String limit = s.split(":")[1];
+                return getPageBeanWithPageHelper(Integer.parseInt(start),Integer.parseInt(limit),1);
+            }
+        });
+    }
+
     @Override
     public PageBean getPageBean(int start, int limit,int mode) {
+        // 走缓存
+
+        if(mode==1 && start <= cacheMaxSize) {
+            PageBean pageBean = hotPostListCache.get(start+":"+limit);
+            if(pageBean!=null) {
+                return pageBean;
+            }
+        }
+
+        return getPageBeanWithPageHelper(start,limit,mode);
+    }
+
+    private PageBean getPageBeanWithPageHelper(int start, int limit,int mode) {
         PageHelper.startPage(start,limit);
         List<DiscussPost> posts = discussPostMapper.selectAllOutsideBlacklist(mode);
         PageInfo<DiscussPost> pageInfo = new PageInfo<>(posts);
@@ -55,6 +102,7 @@ public class DiscussPostServiceImpl implements DiscussPostService {
         }
         return PageBeanUtil.getPageBean(pageInfo,contents);
     }
+
 
     @Override
     public int findCountOutsideBlacklist() {

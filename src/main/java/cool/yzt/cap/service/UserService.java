@@ -10,7 +10,7 @@ public interface UserService {
     int checkRegisterUser(User user);
     int register(User user);
     int activation(int id,String code);
-    int login(String username,String password,long expiredSeconds,String ticket);
+    int login(String username,String password,int expiredSeconds,String ticket);
     int changeHeader(int id,String headerUrl);
     int changePassword(int id, String oldPassword, String newPassword);
     User findInCacheById(int id);

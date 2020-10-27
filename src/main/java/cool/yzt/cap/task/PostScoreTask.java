@@ -27,9 +27,8 @@ public class PostScoreTask {
         RedisUtil.close(jedis);
     }
 
-    // 每隔6小时执行一次
-    @Scheduled(cron = "0 0 0/6 * * ?")
-    //@Scheduled(cron = "0 0/3 * * * ?")
+    // 每隔2小时执行一次
+    @Scheduled(cron = "0 0 0/2 * * ?")
     public void calculateScore() {
         Jedis jedis = RedisUtil.getJedis();
         Set<String> posts = jedis.smembers(RedisKeyUtil.getChangedPostKey());

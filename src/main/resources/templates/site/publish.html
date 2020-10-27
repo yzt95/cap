@@ -6,7 +6,7 @@
 
     <title>CodeAndPeace-发布新贴</title>
 
-    <link rel="icon" href="https://static.nowcoder.com/images/logo_87_87.png"/>
+    <div th:replace="index::icon"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" th:href="@{/css/global.css}" />
     <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}" />
@@ -23,20 +23,20 @@
     <div class="row">
         <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
             <hr>
-            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发起新问题</h2>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发新贴 </h2>
             <hr>
 
             <form th:action="@{/publish}" method="post">
                 <input type="hidden" name="id" value="">
                 <div class="form-group">
-                    <label for="title">问题标题</label>
+                    <label for="title">标题</label>
                     <input type="text" class="form-control" value="" id="title" name="title"
                            placeholder="请输入标题"
                            autocomplete="off"
                            th:value="${code==null}?'':${title}">
                 </div>
                 <div class="form-group" id="question-editor">
-                    <label for="description">问题补充</label>
+                    <label for="description">内容</label>
                     <textarea name="content" id="description" style="display:none;"
                               class="form-control"
                               cols="30"
@@ -66,12 +66,14 @@
         </div>
         <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
             <hr>
-            <h3>问题发起指南</h3>
-            • 问题标题: 请用精简的语言描述您发布的问题，不超过25字
+            <h3>发帖指南</h3>
+            • 标题: 请用精简的语言描述您发布的帖子
             <br>
-            • 问题补充: 详细补充您的问题内容，并确保问题描述清晰直观
+            • 内容: 详细补充您的帖子内容，并确保问题描述清晰直观
             <br>
-            • 墙裂推荐使用Markdown语法发布问题
+            • 墙裂推荐使用 Markdown 语法发布问题
+            <br>
+            • <a  target="_blank" href="https://www.runoob.com/markdown/md-tutorial.html">什么是 Markdown？</a>
         </div>
     </div>
     <input type="hidden" id="msg" th:value="${code==null?'':msg}">

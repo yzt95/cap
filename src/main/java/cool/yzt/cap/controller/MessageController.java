@@ -1,5 +1,6 @@
 package cool.yzt.cap.controller;
 
+import cn.hutool.http.HtmlUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cool.yzt.cap.annotation.LoginRequired;
@@ -121,7 +122,7 @@ public class MessageController {
         Message message = new Message();
         message.setFromId(fromUser.getId());
         message.setToId(toUser.getId());
-        message.setContent(content);
+        message.setContent(HtmlUtil.escape(content));
 
         StringBuilder sb = new StringBuilder();
         if (fromUser.getId() > toUser.getId()){

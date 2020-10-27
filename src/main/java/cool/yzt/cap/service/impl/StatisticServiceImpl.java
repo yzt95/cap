@@ -24,14 +24,16 @@ public class StatisticServiceImpl implements StatisticService {
     @Override
     public void recordUV(String cookie) {
         Jedis jedis = RedisUtil.getJedis();
-        jedis.sadd(RedisKeyUtil.getUVKey(),cookie);
+        jedis.pfadd(RedisKeyUtil.getUVKey(),cookie);
+        //jedis.sadd(RedisKeyUtil.getUVKey(),cookie);
         RedisUtil.close(jedis);
     }
 
     @Override
     public void recordDAU(int userId) {
         Jedis jedis = RedisUtil.getJedis();
-        jedis.sadd(RedisKeyUtil.getDAUKey(),String.valueOf(userId));
+        //jedis.sadd(RedisKeyUtil.getDAUKey(),String.valueOf(userId));
+        jedis.pfadd(RedisKeyUtil.getDAUKey(),String.valueOf(userId));
         RedisUtil.close(jedis);
     }
 

@@ -72,11 +72,7 @@ public class UserServiceImpl implements UserService, MessageConstant {
         user.setActivationCode(GeneralUtil.getUUId());
         user.setHeaderUrl(defaultHeaderUrlPrefix+RandomUtil.randomInt(0,1000)+defaultHeaderUrlSuffix);
         user.setCreateTime(new Date());
-
-
         userMapper.insert(user);
-
-
 
         /*发送验证邮件*/
 
@@ -134,7 +130,7 @@ public class UserServiceImpl implements UserService, MessageConstant {
     }
 
     @Override
-    public int login(String username, String password, long expiredSeconds,String ticket) {
+    public int login(String username, String password, int expiredSeconds,String ticket) {
         if(StringUtils.isBlank(username)) {
             return LOGIN_FAILED_USERNAME;
         }
@@ -152,7 +148,7 @@ public class UserServiceImpl implements UserService, MessageConstant {
             loginTicket.setTicket(ticket);
             loginTicket.setStatus(1);
             loginTicket.setExpired(new Date(System.currentTimeMillis()+1000*expiredSeconds));
-            int ret = loginTicketService.save(loginTicket);
+            int ret = loginTicketService.save(loginTicket, expiredSeconds);
             return LOGIN_SUCCESS;
         }else {
             return LOGIN_FAILED_PASSWORD;

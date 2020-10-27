@@ -16,11 +16,12 @@ public class LoginTicketServiceImpl implements LoginTicketService {
     private UserService userService;
 
     @Override
-    public int save(LoginTicket loginTicket) {
+    public int save(LoginTicket loginTicket,int expiredSeconds) {
         Jedis jedis = RedisUtil.getJedis();
         String key = RedisKeyUtil.getLoginTicketKey(loginTicket.getTicket());
         String value = JSONUtil.toJsonStr(loginTicket);
         jedis.set(key,value);
+        jedis.expire(key, expiredSeconds);
         RedisUtil.close(jedis);
         return 1;
     }

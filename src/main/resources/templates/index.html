@@ -3,9 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="https://yzt.cool/upload/2020/05/avatar-5c35cefa8e1f48968928e37830d93f98.jpg"/>
+	<link rel="icon" th:href="@{/img/icon.jpg}" th:fragment="icon">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
 	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link th:href="@{/css/emoji.css}" rel="stylesheet">
 	<title>CodeAndPeace-首页</title>
 
 </head>
@@ -65,7 +66,6 @@
 			</div>
 		</header>
 
-
 		<!-- 内容 -->
 		<div class="main bgimg">
 			<div class="container">
@@ -73,21 +73,18 @@
 					<!-- 筛选条件 -->
 					<ul class="nav nav-tabs mb-3">
 						<li class="nav-item">
-							<div class="nav-link active" th:if="${mode=='newest'}">最新</div>
-							<a class="nav-link" th:href="@{/index}" th:if="${mode=='hottest'}">最新</a>
+							<a class="nav-link" th:href="@{/index}" th:if="${mode=='newest'}">最热<span class="emoji emoji1f525"/></a>
+							<div class="nav-link active" th:if="${mode=='hottest'}">最热<span class="emoji emoji1f525"/></div>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" th:href="@{/index/hottest/1}" th:if="${mode=='newest'}">最热</a>
-							<div class="nav-link active" th:if="${mode=='hottest'}">最热</div>
+							<div class="nav-link active" th:if="${mode=='newest'}">最新<span class="emoji emoji1f680"/></div>
+							<a class="nav-link" th:href="@{/index/newest/1}" th:if="${mode=='hottest'}">最新<span class="emoji emoji1f680"/></a>
 						</li>
 					</ul>
 					<a th:href="@{/publish}"><button type="button" class="btn btn-primary btn-sm position-absolute rt-0"
 													>我要发布</button>
 					</a>
-
 				</div>
-
-
 
 				<!-- 帖子列表 -->
 				<ul class="list-unstyled">
@@ -114,7 +111,7 @@
 				</ul>
 				<!-- 分页 -->
 				<nav class="mt-5">
-					<ul class="pagination justify-content-center" th:if="${pageBean.totalContent>0}">
+					<ul class="pagination justify-content-center" th:if="${pageBean.totalPage>1}">
 						<li class="page-item">
 							<a class="page-link" th:href="@{|/index/${mode}/1|}">首页</a>
 						</li>
@@ -154,7 +151,7 @@
 							<div class="col">
 								<ul class="nav">
 									<li class="nav-item">
-										<a class="nav-link text-light" target="_blank" href="https://yzt.cool/s/about">关于</a>
+										<a class="nav-link text-light" target="_blank" href="https://yzt.cool/s/about">关于作者</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link text-light" target="_blank" href="https://github.com/yzt95/cap">源码地址</a>
@@ -175,16 +172,14 @@
 							<div class="col">
 								<ul class="nav btn-group-vertical company-info">
 									<li class="nav-item text-white-50">
-										联系方式：codeandpeace@qq.com
+										联系方式：codeandpeace@yeah.net
 									</li>
 									<li class="nav-item text-white-50">
 										CodeAndPeace © 2020 All rights reserved
 									</li>
-									<!--
 									<li class="nav-item text-white-50">
-										京ICP备14055008号-4
+										鲁 ICP 备 20016571 号
 									</li>
-									-->
 								</ul>
 							</div>
 						</div>

@@ -61,12 +61,12 @@ public class LoginController implements MessageConstant {
     @PostMapping("/login")
     public String login(String username, String password, String captchaCode, boolean rememberMe, Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         String realCaptchaCode = (String) session.getAttribute("captchaCode");
-        /*
+
         if(realCaptchaCode==null || !realCaptchaCode.equalsIgnoreCase(captchaCode)) {
             model.addAttribute("captchaMsg","验证码错误，请重新输入");
             return "site/login";
         }
-         **/
+
         String ticket = GeneralUtil.getUUId();
         int expiredSeconds = rememberMe ? rememberMeExpiredTime : defaultExpiredTime;
         int loginResult = userService.login(username, password, expiredSeconds,ticket);

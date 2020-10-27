@@ -11,7 +11,7 @@ public class RedisUtil {
     static {
         Properties pros = new Properties();
         try {
-            pros.load(RedisUtil.class.getClassLoader().getResourceAsStream("application.properties"));
+            pros.load(RedisUtil.class.getClassLoader().getResourceAsStream("redis.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }

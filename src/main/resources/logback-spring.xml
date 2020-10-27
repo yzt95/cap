@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <contextName>cap</contextName>
-    <property name="LOG_PATH" value="D:/InterviewProjects/cap-log"/>
+    <property name="LOG_PATH" value="/root/cap/log"/>
     <property name="APPDIR" value="cap"/>
 
     <!-- error file -->

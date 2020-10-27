@@ -1,7 +1,8 @@
 HELP.md
 target/
 src/main/resources/mail.setting
-src/main/resources/rabbitmq.txt
+src/main/resources/mq.txt
+src/main/resources/application-prod.properties
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
